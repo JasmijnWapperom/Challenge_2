@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Starship Earth Clock(SEC)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/fonts.css">
+    <link rel="stylesheet" href="assets/reset.css">
+    <link rel="stylesheet" href="assets/common.css">
+    <link rel="stylesheet" href="assets/main.css">
+</head>
+<body class="home">
+<header class="flex app-header">
+    <img src="./assets/images/spacex-x-logo.svg"/>
+</header>
+<div class="app-content">
+    <div class="app-head">
+        <h2>Starship Earth Clock(SEC)</h2>
+    </div>
+    <div class="app-body">
+        <div class="flex flex-grow justify-between dashboard-stats">
+            <div class="flex flex-col">
+                <div class="general-info-item">
+                    <label class="general-info-item-label">Date</label>
+                    <span class="general-info-item-info" id="date">-</span>
+                </div>
+                <div class="general-info-item">
+                    <label class="general-info-item-label">Time</label>
+                    <span class="general-info-item-info" id="clock">-</span>
+                </div>
+                <div class="general-info-item">
+                    <label class="general-info-item-label">Day</label>
+                    <span class="general-info-item-info" id="day">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <img class="spaceHamster" src="assets/images/rockethamster(1).png" />
+</div>
+
+</body>
+</html>
+<script>
+  const DAYS = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+
+  function format(date) {
+    return date.split('/').join('-');
+  }
+
+  function initInterval(...args) {
+    setInterval(() => {
+      const DATE = new Date();
+      args.forEach(arg => arg(DATE))
+    }, 1000)
+  }
+
+  function initClock(date) {
+    const DATE = date;
+    const SEPARATOR = ',';
+    const currentDateArray = DATE.toLocaleString().split(SEPARATOR);
+    const clockElement = document.getElementById('clock');
+
+    this.format(currentDateArray[0]);
+    if (clockElement) {
+      clockElement.innerHTML = currentDateArray[1];
+    }
+  }
+
+  function initBg(date) {
+    const HOURS = date.getHours();
+    let image = "url(./assets/images/night.jpg)";
+
+    if (HOURS >= 6 && HOURS < 20) {
+      image = "url(./assets/images/day.jpg)";
+    }
+
+    document.body.style.backgroundImage = image
+  }
+
+  function initDate(date) {
+    const currentDateArray = date.toLocaleString().split(',');
+    const dateElement = document.getElementById('date');
+    dateElement.innerHTML = this.format(currentDateArray[0]);
+  }
+
+  function initDay(date) {
+    const currentDayNumber = date.getDay();
+    const dateElement = document.getElementById('day');
+    dateElement.innerHTML = DAYS[currentDayNumber]
+  }
+
+  initInterval(initClock, initDate, initDay, initBg);
+</script>
